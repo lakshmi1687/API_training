@@ -1,0 +1,67 @@
+package hamcrest;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+import org.json.*;
+
+public class hamcrest_Matchers {
+
+//	@Test
+	void getUsers() {
+		given()
+		.contentType("ContentType.JSON")
+		
+		.when()
+		.get("http://localhost:3000/employee")
+		
+		.then()
+		.statusCode(200)
+		.log().all()
+		.header("Content-Type", "application/json; charset=utf-8")
+		.assertThat().body("data[0].address.city",equalTo("Chicago"));
+				
+	}
+//	@Test
+	public void getUserAndValidateUsingAssertions() {
+		
+		Response res = given()
+		 .contentType("ContentType.JSON")
+		
+		.when()
+		  .get("http://localhost:3000/employee");
+		
+		Assert.assertEquals(res.statusCode(),200);
+		Assert.assertEquals(res.header("Content-Type"),"application/json; charset=utf-8");
+		String cityname = res.jsonPath().get("data[0].address.city").toString();
+		Assert.assertEquals(cityname, "Chicago");
+	}
+	@Test
+	public void getFirstName() {
+		
+		Response res = given() // return type is in the form of response
+		.contentType(ContentType.JSON)
+		
+		.when()
+		.get("http://localhost:3000/employee");
+		
+		JSONObject jo = new JSONObject(res.asString()); // converting response into json object
+		 JSONArray arrlen = jo.getJSONArray("data");
+		 boolean status=false;
+		 
+		 for(int i=0; i<arrlen.length();i++) {
+			 String fname = arrlen.getJSONObject(i).get("first_name").toString();
+			 if (fname.equals("Michael")) { 
+			     status=true;
+			     break; 
+			 }
+			 
+		 }
+		 Assert.assertEquals(status, true);
+		
+	}
+
+}
