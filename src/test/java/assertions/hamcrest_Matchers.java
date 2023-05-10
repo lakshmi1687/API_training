@@ -1,4 +1,4 @@
-package hamcrest;
+package assertions;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,7 +10,7 @@ import org.json.*;
 
 public class hamcrest_Matchers {
 
-//	@Test
+	@Test
 	void getUsers() {
 		given()
 		.contentType("ContentType.JSON")
@@ -20,9 +20,14 @@ public class hamcrest_Matchers {
 		
 		.then()
 		.statusCode(200)
-		.log().all()
 		.header("Content-Type", "application/json; charset=utf-8")
-		.assertThat().body("data[0].address.city",equalTo("Chicago"));
+		.assertThat().body("data[0].address.city",equalTo("Chicago"))
+		.and()
+		.body("data[0].email",is("michael.lawson@reqres.in"))
+		.and().body("data[2].address.city", equalToIgnoringCase("Hyderabad"))
+		.and().body("data[3].email", containsString("byron.fields@reqres.in"))
+		.and().body("data[1].first_name", startsWith("L"))
+		.and().body("data[2].address.city", endsWith("d"));
 				
 	}
 //	@Test
@@ -39,7 +44,7 @@ public class hamcrest_Matchers {
 		String cityname = res.jsonPath().get("data[0].address.city").toString();
 		Assert.assertEquals(cityname, "Chicago");
 	}
-	@Test
+//	@Test
 	public void getcityNameUsingName() {
 		
 		Response res = given() // return type is in the form of response

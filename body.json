@@ -17,6 +17,11 @@
             "email": "lindsay.ferguson@reqres.in",
             "first_name": "Lindsay",
             "last_name": "Ferguson",
+            "address": {
+                "street": "4230",
+                "city": "newyork",
+                "postal": "213458"
+            },
             "avatar": "https://reqres.in/img/faces/8-image.jpg"
         },
         {
@@ -24,6 +29,11 @@
             "email": "tobias.funke@reqres.in",
             "first_name": "Tobias",
             "last_name": "Funke",
+            "address": {
+                "street": "4039",
+                "city": "hyderabad",
+                "postal": "213496"
+            },
             "avatar": "https://reqres.in/img/faces/9-image.jpg"
         },
         {
@@ -31,6 +41,11 @@
             "email": "byron.fields@reqres.in",
             "first_name": "Byron",
             "last_name": "Fields",
+            "address": {
+                "street": "9239",
+                "city": "bangalore",
+                "postal": "113456"
+            },
             "avatar": "https://reqres.in/img/faces/10-image.jpg"
         },
         {
@@ -38,6 +53,11 @@
             "email": "george.edwards@reqres.in",
             "first_name": "George",
             "last_name": "Edwards",
+            "address": {
+                "street": "7239",
+                "city": "chennai",
+                "postal": "263456"
+            },
             "avatar": "https://reqres.in/img/faces/11-image.jpg"
         },
         {
@@ -45,6 +65,11 @@
             "email": "rachel.howell@reqres.in",
             "first_name": "Rachel",
             "last_name": "Howell",
+            "address": {
+                "street": "4639",
+                "city": "pune",
+                "postal": "713456"
+            },
             "avatar": "https://reqres.in/img/faces/12-image.jpg"
         }
     ]
