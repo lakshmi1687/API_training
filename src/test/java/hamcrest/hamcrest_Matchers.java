@@ -40,7 +40,7 @@ public class hamcrest_Matchers {
 		Assert.assertEquals(cityname, "Chicago");
 	}
 	@Test
-	public void getFirstName() {
+	public void getcityNameUsingName() {
 		
 		Response res = given() // return type is in the form of response
 		.contentType(ContentType.JSON)
@@ -49,14 +49,18 @@ public class hamcrest_Matchers {
 		.get("http://localhost:3000/employee");
 		
 		JSONObject jo = new JSONObject(res.asString()); // converting response into json object
-		 JSONArray arrlen = jo.getJSONArray("data");
+		JSONArray arrlen = jo.getJSONArray("data");
 		 boolean status=false;
 		 
 		 for(int i=0; i<arrlen.length();i++) {
 			 String fname = arrlen.getJSONObject(i).get("first_name").toString();
-			 if (fname.equals("Michael")) { 
-			     status=true;
-			     break; 
+			 if (fname.equals("Lindsay")) { 
+				  String addres = arrlen.getJSONObject(i).getJSONObject("address").get("city").toString();
+				  System.out.println(addres);
+				  if (addres.equals("newyork")) {
+					  status=true;
+					  break;
+				  } 
 			 }
 			 
 		 }
