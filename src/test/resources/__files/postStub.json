@@ -1,5 +1,5 @@
 {
-	"user1": [{
+	"user1": {
 		"id": 0,
 		"username": "Tom",
 		"firstName": "williams",
@@ -8,5 +8,5 @@
 		"password": "password",
 		"phone": "987653098",
 		"userStatus": 0
-	}]
+	}
 }

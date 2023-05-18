@@ -2,13 +2,18 @@ package wiremock;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
-
 import authentication.Tokens;
 import io.restassured.RestAssured;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Base64;
+
 import org.hamcrest.Matchers;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -21,6 +26,7 @@ public class crudOperationsWithAuthAndPathParam implements Tokens {
 	
 	private static WireMockServer server = new WireMockServer(PORT);
 	
+	
 	@BeforeClass
 	public static void setUp() {
 		if(server.isRunning() && server != null) {
@@ -32,16 +38,17 @@ public class crudOperationsWithAuthAndPathParam implements Tokens {
 	}
 	@Test(priority=1)
 	public void postStub() {
+		String encodedCredentials = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
 		 stubFor(post(urlEqualTo("/users"))
 		  .willReturn(aResponse()
 				  .withStatus(201)
 				  .withHeader("content-type","application/json")
-				  .withHeader(userName, password)
+				  .withHeader("Authorization", "Base "+encodedCredentials)
 				  .withBody("{\"id\": 234, \"name\": \"Tom williams\"}")));
 	}
 //	@Test(priority=1)
 	public void postStubWithFile() {
-		stubFor(post(urlEqualTo("/users"))
+		stubFor(post(urlEqualTo("/users")).withBasicAuth(userName,password)
 				.willReturn(aResponse()
 						.withStatus(201)
 						.withHeader("content-type","application/json")
@@ -49,9 +56,10 @@ public class crudOperationsWithAuthAndPathParam implements Tokens {
 	}
 	@Test(priority=2)
 	public void postEndPoint() {
+        
 		RestAssured.given()
-		.auth().basic(userName, password)
-		.when().post("http://localhost:8080/users").then()
+		.when().post("http://localhost:8080/users")
+		.then()
 		.assertThat().statusCode(201)
 		.assertThat().header("Content-Type", "application/json")
 		.assertThat().body("id", Matchers.equalTo(234))
@@ -61,10 +69,10 @@ public class crudOperationsWithAuthAndPathParam implements Tokens {
 	@Test(priority=3)
 	public static void getStub() {
 		 stubFor(get(urlEqualTo("/get/users/1"))
+		  .withHeader("API-Key", equalTo(bearerToken))
 		  .willReturn(aResponse()
 				  .withStatus(200)
 				  .withHeader("content-type","application/json")
-				  .withHeader("Authentication", "Bearer "+bearerToken)
 				  .withBody("Created First User")));
 		
 	}
@@ -117,5 +125,9 @@ public class crudOperationsWithAuthAndPathParam implements Tokens {
 			server.shutdownServer();
 		}
 	}
+	
 
-}
+	    
+	}
+	
+	
